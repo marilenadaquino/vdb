@@ -1,2 +1,2 @@
-# vdb
-vespasiano da bisticci's letters dataset
+# vespasiano da bisticci's letters 
+vespasiano da bisticci's letters - RDF dataset
