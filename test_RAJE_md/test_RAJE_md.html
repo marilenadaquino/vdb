@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/rash.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/rash-inline.css" />
+    <script src="js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/rash.js"></script>
+    <script src="js/raje.js"></script>
+    <script src="js/libs/mousetrap.min.js"></script>
+    <script src="js/libs/rangy-core.js"></script>
+    <script src="js/libs/rangy-textrange.js"></script>
+    <script src="js/libs/rangy-selectionsaverestore.js"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <title>SPACIN: the core of OpenCitations</title>
+    <meta about="mailto:silvio.peroni@unibo.it" typeof="schema:Person" property="schema:name" name="dc.creator" content="Silvio Peroni" />
+    <meta about="mailto:silvio.peroni@unibo.it" property="schema:email" content="silvio.peroni@unibo.it" />
+    <link about="mailto:silvio.peroni@unibo.it" property="schema:affiliation" href="affiliation1" />
+    <meta about="mailto:fabio.vitali@unibo.it" typeof="schema:Person" property="schema:name" name="dc.creator" content="Fabio Vitali" />
+    <meta about="mailto:fabio.vitali@unibo.it" property="schema:email" content="fabio.vitali@unibo.it" />
+    <link about="mailto:fabio.vitali@unibo.it" property="schema:affiliation" href="affiliation1" />
+    <meta about="mailto:david.shotton@oerc.ox.ac.uk" typeof="schema:Person" property="schema:name" name="dc.creator" content="David Shotton" />
+    <meta about="mailto:david.shotton@oerc.ox.ac.uk" property="schema:email" content="david.shotton@oerc.ox.ac.uk" />
+    <link about="mailto:david.shotton@oerc.ox.ac.uk" property="schema:affiliation" href="affiliation2" />
+    <meta about="affiliation1" typeof="schema:Organization" property="schema:name" content="DASPLab, DISI, University of Bologna, Bologna, Italy" />
+    <meta about="affiliation2" typeof="schema:Organization" property="schema:name" content="Oxford e-Research Centre, University of Oxford, Oxford, UK" />
+    <meta property="prism:keyword" content="OpenCitations Corpus, Semantic Publishing" />
+    <meta name="dcterms.subject" content="​Subject" />
+</head>
+<body>
+    <section role="doc-abstract" id="abs">
+      <h1>Abstract</h1>
+      <p>In this demo paper we introduce SPACIN, the main tool used for
+producing the OpenCitations Corpus.<br /></p>
+    </section>
+    <section id="section1">
+      <h1>Introduction<br /></h1>
+      <p>The OpenCitations Corpus (OCC)<a href="#fn1"> </a> <a href="#bib1"> </a> is an open repository of scholarly
+citation data, which provides accurate bibliographic references harvested from
+the scholarly literature, that others may freely build upon, enhance and reuse
+for any purpose, without restriction under copyright or database law. In this
+demo paper we introduce the <em>SPAR Citation Indexer</em>, or <strong>SPACIN</strong>, which is
+the primary mechanisms used for producing all the data included in the OCC.</p>
+      <p><br /></p>
+      <p><br /></p>
+    </section>
+    <section id="section2">
+      <h1>The SPAR Citation Indexer</h1>
+      <p>SPACIN is a script and a series of Python classes that allow one to process
+particular JSON files containing the bibliographic reference lists of papers. An
+excerpt of an input JSON file used by SPACIN is introduced in Listing 1.​</p>
+      <figure id="table_1">
+        <pre>​​​{
+"localid": "MED-27193261", "doi": "10.1038/ncomms11627", "curator": "BEE EuropeanPubMedCentralProcessor","source_provider": "Europe PubMed Central","source": "http://www.ebi.ac.uk/europepmc/…","references": [ { … }, … ], …
+}​ ​ ​ <code><br /></code></pre>
+        <figcaption>An exemplar JSON file used by SPACIN.</figcaption>
+      </figure>
+      <p>SPACIN processes such JSON files and retrieves additional metadata
+information about all the citing/cited articles by querying the Crossref API
+and the ORCID API, and it stores all the metadata relevant to bibliographic entities by using the OCC metadata model<a href="#bib2"> </a> summarised in Figure 1.</p>
+      <figure id="figure_1">
+        <p><img src="http://gianmarco.spinaci.web.cs.unibo.it/raje/test_image.png" alt="http://gianmarco.spinaci.web.cs.unibo.it/raje/test_image.png" /></p>
+        <figcaption>​A diagram of the main ontological entities created by SPACIN.</figcaption>
+      </figure>
+      <p>Upon initial curation by SPACIN, a URL is assigned to each entity,
+according to the following schema:<br /></p>
+      <p><code>​[corpus URL] + [sub-dataset ID] + / + [entity ID]</code>​ </p>
+      <p>In Table 1 we summarise some metrics related to the resources create by
+SPACIN starting from JSON files describing all papers included in the
+Proceedings of ISWC 2015 and in PubMed Central.<br /></p>
+      <figure id="table_1">
+        <table>
+          <tbody>
+            <tr>
+               <th>Property</th>
+               <th>ISWC 2015</th>
+               <th>Europe</th>
+              <th>PubMed</th>
+              <th>Central</th>
+            </tr>
+            <tr>
+               <td>
+                <p>Percentage of cited resources with no metadata<br /></p>
+              </td>
+               <td>
+                <p>44%</p>
+              </td>
+               <td>
+                <p>13%</p>
+              </td>
+              <td>
+                <p><br /></p>
+              </td>
+              <td>
+                <p><br /></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
+      <p>Table 1. Some aggregated data of the two exemplar datasets produced by SPACIN.<br /></p>
+      <p>All the aforementioned metrics are calculated by means of Formula 1, where <span class="rash-math"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mo>​</mo><mfrac><mi>c</mi><mi>a</mi></mfrac></mstyle></math></span>​ is the ratio between all the cited resources for which Crossref did not return
+any metadata and all the cited resources considered.</p>
+      <figure id="formula_1">
+        <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>c</mi><mo>/</mo><mi>a</mi><mo>⋅</mo><mn>100</mn></mstyle></math></p>
+      </figure>
+      <p><br /></p>
+      <p><br /></p>
+      <p><br /></p>
+    </section>
+    <section id="section3">
+      <h1>Conclusions</h1>
+      <p>In this paper we have introduced SPACIN, the SPAR Citation Indexer, that is
+a tool for creating the OpenCitations Corpus.<br /></p>
+    </section>
+    <section role="doc-bibliography" id="bibreflist">
+      <h1>References</h1>
+      <ol>
+        <li id="bib1" role="doc-biblioentry">
+          <p>Peroni, S., Dutton, A., Gray, T., Shotton, D. (2015). Setting our
+bibliographic references free: towards open citation data. Journal of
+Documentation, 71 (2): 253–277. <a href="http://dx.doi.org/10.1108 /JD-12-2013-0166">http://dx.doi.org/10.1108
+/JD-12-2013-0166</a><br /></p>
+        </li>
+        <li id="bib2" role="doc-biblioentry">
+          <p>Peroni, S., Shotton, D. (2016). Metadata for the OpenCitations Corpus.
+Figshare. <a href="https://dx.doi.org/10.6084/m9.figshare.3443876">https://dx.doi.org/10.6084/m9.figshare.3443876</a><br /></p>
+        </li>
+      </ol>
+    </section>
+    <section role="doc-endnotes" id="fnlist">
+      <section id="fn1" role="doc-endnote">
+        <p>The OCC is available at http://opencitations.net.<br /></p>
+      </section>
+    </section>
+
+</body>
+</html>
